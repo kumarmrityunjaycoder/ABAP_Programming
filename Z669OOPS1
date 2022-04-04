@@ -1,0 +1,29 @@
+REPORT Z669OOPS1.
+class lcl_emp definition.
+         PUBLIC SECTION. "in the c++ visibility section by default becomes public but in abap it must be mentioned in proper
+        "way in proper order like public,protected and private.
+         data x type i."instance type
+         class-DATA y type c."class type
+         constants z type i value 20. "constant type.
+ENDCLASS.
+*if in the class the method is defined then it must be implemented in next step
+*how to access the data from class with the help of object or class??
+*in public section it can be access by class name and object both but in case of class only constant and class data can be access not instance data.
+*let's try to access all the data from out side of class
+*write : / X ."syntax error.
+*write : / y ."syntax error.
+*write : / z."syntax error.
+*write : / lcl_emp->x."syntax erroe.
+*write : / lcl_emp->y."syntax error .
+*write : / lcl_emp->z."syntax error.
+*write : / lcl_emp=>x."syntax erroe it(instances) can not be accessed by implies.
+*write : / lcl_emp=>y."CLass can be directly accessed with the help of implies.
+*SELECTION-SCREEN skip 2.
+*write : / lcl_emp=>z."constant   can be accessed by implies.
+
+data ob1 TYPE REF TO lcl_emp."reference aliace for class no memory is allocated.
+create OBJECT ob1."memory is allocated.
+*Now we try to access the all class object from object.
+write : / ob1->x.
+write : / ob1->y.
+write : / ob1->z.
