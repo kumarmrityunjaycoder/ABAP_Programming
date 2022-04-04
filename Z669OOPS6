@@ -1,0 +1,53 @@
+REPORT Z669OOPS6.
+
+class lcl_customer definition.
+ PUBLIC SECTION.
+      METHODS setdata IMPORTING i_kunnr type kna1-kunnr .
+
+  PROTECTED SECTION.
+     METHODS display.
+     types : begin of ty_customer,
+             name1 type kna1-name1,
+             name2 type kna1-name2,
+             ort01 type kna1-ort01,
+            end of ty_customer.
+
+data wa_cust type ty_customer.
+
+ENDCLASS.
+
+class lcl_customer IMPLEMENTATION.
+      method setdata.
+      select single name1 name2 ort01
+      from kna1
+      into wa_cust
+      where kunnr = i_kunnr .
+
+if sy-subrc eq 0.
+      display( ).
+
+
+else.
+   MESSAGE 'No data found...' type 'I'.
+ENDIF.
+      ENDMETHOD.
+
+      method display.
+      format color 5.
+      write : /'Display the selected customer in details..'.
+      write :/ 'First name of the customer:',wa_cust-name1,
+            / 'second nme of the customer:',wa_cust-name2,
+             / 'City  name of the customer:',wa_cust-ort01.
+      format color off.
+  ENDMETHOD.
+ENDCLASS.
+
+data ob1 type ref to lcl_customer.
+START-OF-SELECTION.
+create object ob1.
+
+PARAMETERS p_kunnr type kna1-kunnr.
+
+call method ob1->setdata
+EXPORTING
+ i_kunnr = p_kunnr .
